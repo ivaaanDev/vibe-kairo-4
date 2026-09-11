@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+/*
+ * Los valores viven en lib/diseno/tokens.ts y llegan como variables --k-*.
+ * Aquí solo se nombran para Tailwind.
+ */
+@theme inline {
+  --color-bg: var(--k-background);
+  --color-surface: var(--k-surface);
+  --color-surface-2: var(--k-surface-secondary);
+  --color-fg: var(--k-text-primary);
+  --color-fg-muted: var(--k-text-secondary);
+  --color-line: var(--k-border);
+  --color-line-strong: var(--k-border-strong);
+  --color-accent: var(--k-accent);
+  --color-accent-fg: var(--k-accent-contrast);
+  --color-accent-soft: var(--k-accent-soft);
+  --color-danger: var(--k-danger);
+  --color-focus: var(--k-focus);
+  --color-scrim: var(--k-scrim);
+
+  --font-sans: var(--font-kairo), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --radius-control: var(--k-radio-control);
+  --radius-panel: var(--k-radio-panel);
+  --radius-sheet: var(--k-radio-sheet);
+
+  --ease-estandar: var(--k-curva-estandar);
+  --ease-entrada: var(--k-curva-entrada);
+  --ease-salida: var(--k-curva-salida);
+
+  --animate-aparecer: kairo-aparecer var(--k-duracion-normal) var(--k-curva-entrada) both;
+}
+
+@keyframes kairo-aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+/* El instante de la marca recorre un tramo del anillo hasta su lugar. */
+@keyframes kairo-orbita {
+  from {
+    transform: rotate(-150deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+
+/* En móvil, con el teclado abierto, la barra inferior cede su espacio al contenido. */
+@media (pointer: coarse) and (max-width: 639px) {
+  body:has(input:focus, textarea:focus) .oculta-con-teclado {
+    display: none;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: var(--k-background);
+    color: var(--k-text-primary);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 22px;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--k-accent-soft);
+  }
+
+  /* El outline solo se sustituye, nunca se elimina sin reemplazo. */
+  :focus {
+    outline: none;
+  }
+  :focus-visible {
+    outline: 2px solid var(--k-focus);
+    outline-offset: 2px;
+  }
+  /* Campos de texto: el foco se ve en su propio borde. */
+  .campo:focus-visible {
+    outline-offset: 0;
+  }
+
+  button,
+  [role="button"],
+  a {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  button:disabled {
+    cursor: default;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--k-text-secondary);
+    opacity: 1;
+  }
+
+  /* Campos de fecha y hora con el color del sistema. */
+  input[type="date"],
+  input[type="time"] {
+    color-scheme: inherit;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer utilities {
+  .numeros-tabulares {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .relleno-seguro-inferior {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Tachado que aparece con transición y respeta varias líneas. */
+  .tachado-animado {
+    text-decoration-line: line-through;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: transparent;
+    transition:
+      text-decoration-color var(--k-duracion-normal) var(--k-curva-estandar),
+      color var(--k-duracion-normal) var(--k-curva-estandar);
+  }
+  .tachado-animado[data-tachado="true"] {
+    text-decoration-color: currentColor;
+  }
+
+  .sin-barra-desplazamiento {
+    scrollbar-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
