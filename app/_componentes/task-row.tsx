@@ -8,6 +8,8 @@ import { movimiento } from "@/lib/diseno/tokens";
 import type { Etiqueta } from "@/lib/tipos/etiqueta";
 import type { MomentoLocal, Tarea } from "@/lib/tipos/tarea";
 import { CompletionControl } from "./completion-control";
+import { textoVencimientoDesfasado } from "./huevos-de-pascua/viaje-en-el-tiempo/desfase";
+import { TextoTemporal } from "./huevos-de-pascua/viaje-en-el-tiempo/piezas";
 import { TagIndicator } from "./tag-indicator";
 
 export interface TaskRowProps {
@@ -54,6 +56,8 @@ export function TaskRow({
   const etiquetas = etiquetasDeTarea(tarea, etiquetasPorId);
   const tieneMeta = vencimiento !== null || vencidaEnElDia || etiquetas.length > 0 || tarea.descripcion !== null;
   const conColumnaHora = variante === "agenda";
+  // El estado («Vencida») lo decide el dominio y no viaja en el tiempo: solo lo hace el día.
+  const prefijoVencimiento = vencimiento?.estado === "vencida" ? "Vencida · " : "";
 
   const claseVencimiento =
     vencimiento === null || tarea.completada
@@ -108,7 +112,12 @@ export function TaskRow({
               {vencimiento && (
                 <span className={`inline-flex items-center gap-1 numeros-tabulares ${claseVencimiento}`}>
                   {vencimiento.estado === "vencida" && <CircleAlert size={13} strokeWidth={2} aria-hidden />}
-                  {vencimiento.estado === "vencida" ? `Vencida · ${vencimiento.texto}` : vencimiento.texto}
+                  <TextoTemporal
+                    base={`${prefijoVencimiento}${vencimiento.texto}`}
+                    alternativo={(dias) =>
+                      textoVencimientoDesfasado(tarea.fechaVencimiento, vencimiento.hora, ahora, dias, prefijoVencimiento)
+                    }
+                  />
                 </span>
               )}
               {vencidaEnElDia && (

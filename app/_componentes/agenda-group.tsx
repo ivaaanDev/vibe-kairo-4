@@ -4,6 +4,8 @@ import { AnimatePresence } from "motion/react";
 import { posicionMarcadorAhora, type GrupoAgenda } from "@/lib/dominio/agenda";
 import type { Etiqueta } from "@/lib/tipos/etiqueta";
 import type { MomentoLocal, Tarea } from "@/lib/tipos/tarea";
+import { tituloGrupoDesfasado } from "./huevos-de-pascua/viaje-en-el-tiempo/desfase";
+import { TextoTemporal } from "./huevos-de-pascua/viaje-en-el-tiempo/piezas";
 import { TaskRow } from "./task-row";
 
 /** Un tramo de la secuencia temporal: «Vencidas», «Hoy», «Mañana», «Lunes 14 sep». */
@@ -29,7 +31,11 @@ export function AgendaGroup({
   return (
     <section aria-labelledby={idTitulo} className="mt-6 first:mt-3">
       <h2 id={idTitulo} className="flex items-baseline gap-2 border-b border-line px-1 pb-1.5 text-[13px] font-semibold">
-        <span className={esVencidas ? "text-danger" : "text-fg"}>{grupo.titulo}</span>
+        <TextoTemporal
+          className={esVencidas ? "text-danger" : "text-fg"}
+          base={grupo.titulo}
+          alternativo={(dias) => tituloGrupoDesfasado(grupo.fecha, grupo.titulo, ahora, dias)}
+        />
         <span className="ml-auto font-normal text-fg-muted numeros-tabulares">
           {grupo.tareas.length}
           <span className="sr-only"> {grupo.tareas.length === 1 ? "tarea" : "tareas"}</span>

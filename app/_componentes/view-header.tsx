@@ -6,7 +6,7 @@ export function ViewHeader({
   children,
 }: {
   titulo: string;
-  subtitulo?: string | null;
+  subtitulo?: React.ReactNode;
   acciones?: React.ReactNode;
   children?: React.ReactNode;
 }) {

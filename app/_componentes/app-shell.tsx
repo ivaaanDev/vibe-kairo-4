@@ -7,6 +7,7 @@ import { ProveedorCapas, useCapaModal, useFondoInerte, useMontado } from "@/app/
 import { ProveedorPanel, usePanel, type PanelContextual } from "@/app/_estado/panel-contextual";
 import { useEsAmplio, useEsMedio } from "@/app/_estado/use-media-query";
 import { medidas, movimiento } from "@/lib/diseno/tokens";
+import { ProveedorViajeEnElTiempo } from "./huevos-de-pascua/viaje-en-el-tiempo/contexto";
 import { MobileNavigation } from "./mobile-navigation";
 import { NavigationRail } from "./navigation-rail";
 import { NoticeBanner } from "./notice-banner";
@@ -165,7 +166,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <ProveedorCapas>
       <ProveedorPanel>
         <MotionConfig reducedMotion="user">
-          <Estructura>{children}</Estructura>
+          <ProveedorViajeEnElTiempo>
+            <Estructura>{children}</Estructura>
+          </ProveedorViajeEnElTiempo>
         </MotionConfig>
       </ProveedorPanel>
     </ProveedorCapas>

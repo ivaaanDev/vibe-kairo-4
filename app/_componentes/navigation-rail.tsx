@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { useKairo } from "@/app/_estado/proveedor-kairo";
 import { useAhora } from "@/app/_estado/use-ahora";
 import { contarPendientesHoy } from "@/lib/dominio/agenda";
+import { useGestoMarca } from "./huevos-de-pascua/viaje-en-el-tiempo/contexto";
+import { MensajeDelViaje, ReaccionDeLaMarca } from "./huevos-de-pascua/viaje-en-el-tiempo/piezas";
 import { KairoMark, KairoWordmark } from "./kairo-mark";
 import { OverflowMenu } from "./overflow-menu";
 
@@ -57,15 +59,19 @@ export function NavigationRail() {
   const ruta = usePathname();
   const ahora = useAhora();
   const { tareas } = useKairo();
+  const gesto = useGestoMarca();
   const pendientes = tareas.filter((tarea) => !tarea.completada).length;
   const paraHoy = ahora ? contarPendientesHoy(tareas, ahora) : null;
 
   return (
     <nav aria-label="Principal" className="hidden w-16 shrink-0 flex-col border-r border-line px-2.5 py-4 sm:flex xl:w-[232px] xl:px-3">
-      <div className="mb-5 flex h-11 items-center gap-2.5 px-2.5 text-fg">
-        <KairoMark tamano={22} className="shrink-0" />
+      <div {...gesto.props} className="relative mb-5 flex h-11 items-center gap-2.5 px-2.5 text-fg select-none">
+        <ReaccionDeLaMarca>
+          <KairoMark tamano={22} className="shrink-0" />
+        </ReaccionDeLaMarca>
         <KairoWordmark className="hidden xl:inline" />
         <span className="sr-only xl:hidden">Kairo</span>
+        <MensajeDelViaje />
       </div>
       <ul className="flex flex-col gap-0.5">
         <EnlaceRail href="/" activo={ruta === "/"} icono={ListChecks} etiqueta="Tareas" cuenta={pendientes} descripcionCuenta="pendientes" />

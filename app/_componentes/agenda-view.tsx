@@ -11,6 +11,8 @@ import { fechaLarga } from "@/lib/dominio/formato-fecha";
 import { AgendaGroup } from "./agenda-group";
 import { AgendaRangeSelector } from "./agenda-range-selector";
 import { EmptyState } from "./empty-state";
+import { fechaLargaDesfasada } from "./huevos-de-pascua/viaje-en-el-tiempo/desfase";
+import { TextoTemporal } from "./huevos-de-pascua/viaje-en-el-tiempo/piezas";
 import { TagFilter } from "./tag-filter";
 import { useRetencionCompletadas } from "./task-list";
 import { ViewHeader } from "./view-header";
@@ -42,7 +44,13 @@ export function AgendaView({ rangoInicial }: { rangoInicial: RangoAgenda }) {
 
   return (
     <>
-      <ViewHeader titulo="Agenda" subtitulo={ahora ? fechaLarga(ahora.fecha) : null} acciones={<TagFilter />}>
+      <ViewHeader
+        titulo="Agenda"
+        subtitulo={
+          ahora ? <TextoTemporal base={fechaLarga(ahora.fecha)} alternativo={(dias) => fechaLargaDesfasada(ahora, dias)} /> : null
+        }
+        acciones={<TagFilter />}
+      >
         <div className="pt-3 pb-2">
           <AgendaRangeSelector rango={rango} onCambiar={cambiarRango} />
         </div>
