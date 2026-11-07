@@ -1,7 +1,8 @@
 # Kairo — Verificación final
 
-Estado al cerrar: 131 pruebas unitarias, 46 pruebas E2E (23 flujos × escritorio 1440 px y móvil
-360 px), `tsc --noEmit` y ESLint sin avisos, `next build` correcto, migración y RLS verificadas en
+Estado al 7 de noviembre de 2026 (DEF-02 corregido): 155 pruebas unitarias en 14 archivos y 26 flujos
+E2E ejecutados a 1440 px y a 360 px (52 ejecuciones; el «viaje en el tiempo» se omite por diseño bajo
+640 px), `tsc --noEmit` y ESLint sin avisos, `next build` correcto, migración y RLS verificadas en
 PostgreSQL 17. Capturas revisadas a 360, 390, 768, 1024 y 1440 px, en claro y oscuro.
 
 | Requisito | Estado | Evidencia |
@@ -29,6 +30,7 @@ PostgreSQL 17. Capturas revisadas a 360, 390, 768, 1024 y 1440 px, en claro y os
 | Dominio con pruebas unitarias | ✔ | `lib/dominio/*.test.ts` |
 | Datos por usuario y RLS | ✔ | `supabase/pruebas/rls.sql`; E2E «los datos están separados por usuario» |
 | Sesión persistente | ✔ | E2E «registro, persistencia de sesión, cierre e inicio de sesión» |
+| Salir con cambios pendientes no los pierde | ✔ | Aviso `beforeunload` mientras la cola tiene trabajo y escrituras con `keepalive`; E2E «salir con cambios sin guardar pide confirmación…» (DEF-01) |
 | Accesibilidad automática | ✔ | axe (WCAG 2.1 A/AA): sin violaciones graves en acceso, tareas, detalle, filtro y agenda |
 | Contraste ≥ 4.5:1 | ✔ | `lib/diseno/tokens.test.ts` en ambos esquemas |
 | Nada fuera de alcance | ✔ | Sin proyectos, subtareas, prioridades, recordatorios, recurrencia, colaboración, estadísticas, búsqueda ni offline. Ideas registradas en `04-evolucion.md` |
@@ -44,7 +46,7 @@ PostgreSQL 17. Capturas revisadas a 360, 390, 768, 1024 y 1440 px, en claro y os
   desaparezca de la vista donde se acaba de crear. Sigue sin pedir nada más que el título.
 - **El filtro** combina etiquetas con «cualquiera de» (OR).
 
-## Pendiente de tu lado
+## Producción
 
-- Conectar un proyecto de Supabase real (ver README). El código, la migración y la verificación de
-  RLS están listos, pero el flujo con Supabase Auth no se ha ejecutado contra un proyecto real.
+- Kairo corre en https://vibe-kairo-4.vercel.app con Vercel y Supabase desde octubre de 2026. El flujo
+  con Supabase Auth se ejecuta ahí; las pruebas automáticas siguen usando el adaptador local.
