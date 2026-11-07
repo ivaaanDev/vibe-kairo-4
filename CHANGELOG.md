@@ -6,8 +6,16 @@ solicitud de cambio (CR) o el defecto (DEF) del Documento Maestro.
 
 ## [Sin publicar]
 
+## [0.9.0] - 2026-11-08
+
+Liberación de H3 (planeada para el 6 de noviembre): DEF-01 corregido, dependencias de producción sin avisos de
+seguridad, RF-11 e integración continua. Registro en `docs/liberacion/v0.9.0.md`.
+
 ### Agregado
 
+- Formatos de registro del cierre: liberación con el checklist de 8.3 y su acta (`docs/liberacion/v0.9.0.md`),
+  hoja de la sesión de validación con CP-12 (`docs/validacion/sesion-v0.9.0.md`), minutas semanales y
+  informe de niveles de servicio (`docs/operacion/`).
 - Integración continua en GitHub Actions (`.github/workflows/ci.yml`): tipos, lint y unitarias, y después E2E en
   Chromium a 1440 y 360 px en cada PR y en cada push a `main` y `dev`. Un trabajo informativo corre los flujos en
   Firefox y Edge (CP-17, RNF-07). En CI, Playwright reintenta una vez y marca como intermitente lo que pasa al
