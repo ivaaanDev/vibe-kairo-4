@@ -15,6 +15,8 @@ solicitud de cambio (CR) o el defecto (DEF) del Documento Maestro.
 - RF-11 (CR-04): aviso de privacidad público en `/privacidad`, enlazado desde el registro, con responsable,
   datos tratados, finalidad, encargados (Supabase y Vercel), conservación y derechos ARCO. Caso CP-19 con tres
   pruebas E2E y revisión de accesibilidad.
+- CP-11 (RNF-01): `npm run medir:carga` siembra el lote de 200 tareas de 6.2 en una cuenta de pruebas y mide la
+  carga de la lista y de la agenda (mediana y máximo de cinco cargas sin caché). Con `--limpiar` borra el lote.
 
 ### Corregido
 

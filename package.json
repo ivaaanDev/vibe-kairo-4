@@ -16,6 +16,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "medir:carga": "node scripts/medir-carga.mjs",
     "sembrar:supabase": "tsx --env-file-if-exists=.env.local scripts/sembrar-supabase.ts"
   },
   "dependencies": {
