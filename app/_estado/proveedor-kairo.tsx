@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { createContext, use, useCallback, useMemo, useRef, useState } from "react";
+import { createContext, use, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { crearClienteKairo, type ErrorCliente } from "@/lib/cliente/api-kairo";
 import { generarId } from "@/lib/cliente/generar-id";
 import { crearEtiqueta as crearEtiquetaDominio, esColorEtiqueta, validarNombreEtiqueta } from "@/lib/dominio/etiquetas";
@@ -71,6 +71,22 @@ export function ProveedorKairo({
   const colas = useRef(new Map<string, Promise<void>>());
   const pendientesPorClave = useRef(new Map<string, number>());
   const enVuelo = useRef(0);
+
+  /*
+   * DEF-01: recargar o cerrar la pestaña mientras la cola tiene cambios pendientes los perdía,
+   * porque las peticiones que aún esperaban turno nunca salían. Mientras haya trabajo en vuelo,
+   * el navegador pide confirmación antes de salir.
+   */
+  useEffect(() => {
+    const alSalir = (evento: BeforeUnloadEvent) => {
+      if (enVuelo.current === 0) return;
+      evento.preventDefault();
+      // Navegadores anteriores a 2024 solo muestran el aviso si además se asigna returnValue.
+      evento.returnValue = "";
+    };
+    window.addEventListener("beforeunload", alSalir);
+    return () => window.removeEventListener("beforeunload", alSalir);
+  }, []);
 
   /** El ref se actualiza de forma síncrona: acciones seguidas ven siempre el último estado. */
   const despachar = useCallback((accion: AccionKairo) => {
