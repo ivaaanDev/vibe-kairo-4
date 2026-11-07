@@ -164,6 +164,15 @@ export function AuthForm({
           {enviando && <LoaderCircle size={16} strokeWidth={2} aria-hidden className="animate-spin motion-reduce:animate-none" />}
           {textos.boton}
         </button>
+        {modo === "registro" && (
+          <p className="text-[13px] text-fg-muted">
+            Al crear tu cuenta aceptas el{" "}
+            <Link href="/privacidad" className="font-medium text-accent underline-offset-2 hover:underline">
+              aviso de privacidad
+            </Link>
+            .
+          </p>
+        )}
       </form>
 
       <p className="mt-6 text-[14px] text-fg-muted">

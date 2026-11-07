@@ -12,6 +12,9 @@ solicitud de cambio (CR) o el defecto (DEF) del Documento Maestro.
   Chromium a 1440 y 360 px en cada PR y en cada push a `main` y `dev`. Un trabajo informativo corre los flujos en
   Firefox y Edge (CP-17, RNF-07). En CI, Playwright reintenta una vez y marca como intermitente lo que pasa al
   segundo intento.
+- RF-11 (CR-04): aviso de privacidad público en `/privacidad`, enlazado desde el registro, con responsable,
+  datos tratados, finalidad, encargados (Supabase y Vercel), conservación y derechos ARCO. Caso CP-19 con tres
+  pruebas E2E y revisión de accesibilidad.
 
 ### Corregido
 
