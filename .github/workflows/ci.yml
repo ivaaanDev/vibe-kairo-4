@@ -1,0 +1,65 @@
+# Integración continua de Kairo (puntos 5.4 y 6.9 del Documento Maestro).
+# Corre en cada PR y en cada push a main o dev. Protege main exigiendo «Tipos, lint y unitarias» y «E2E».
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    name: Tipos, lint y unitarias
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+
+  e2e:
+    name: E2E (Chromium a 1440 y 360 px)
+    needs: verificar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --project=escritorio --project=movil-360
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: resultados-e2e
+          path: test-results/
+          retention-days: 7
+
+  navegadores:
+    name: E2E en Firefox y Edge (CP-17, informativo)
+    needs: verificar
+    runs-on: ubuntu-latest
+    # No bloquea: sirve como evidencia de RNF-07 mientras se estabiliza.
+    continue-on-error: true
+    env:
+      KAIRO_E2E_NAVEGADORES: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps firefox msedge
+      - run: npx playwright test --project=firefox --project=edge

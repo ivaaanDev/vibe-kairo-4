@@ -6,6 +6,13 @@ solicitud de cambio (CR) o el defecto (DEF) del Documento Maestro.
 
 ## [Sin publicar]
 
+### Agregado
+
+- Integración continua en GitHub Actions (`.github/workflows/ci.yml`): tipos, lint y unitarias, y después E2E en
+  Chromium a 1440 y 360 px en cada PR y en cada push a `main` y `dev`. Un trabajo informativo corre los flujos en
+  Firefox y Edge (CP-17, RNF-07). En CI, Playwright reintenta una vez y marca como intermitente lo que pasa al
+  segundo intento.
+
 ## [0.1.0] - 2026-09-22
 
 Línea base de construcción (etiqueta `v0.1.0` sobre `7bbd1b2`).

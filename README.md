@@ -52,7 +52,10 @@ npm run sembrar:supabase -- demo@kairo.app una-contrasena
 | `npm test` | Vitest: dominio, servicios, reductor, contraste de tokens, arquitectura |
 | `npm run test:e2e` | Playwright a 1440 px y 360 px (compila y arranca su propio servidor local) |
 
-La primera vez que ejecutes las pruebas E2E: `npx playwright install chromium`.
+La primera vez que ejecutes las pruebas E2E: `npx playwright install chromium`. Para correrlas también en
+Firefox y Edge (CP-17): `npx playwright install firefox msedge` y `KAIRO_E2E_NAVEGADORES=1 npm run test:e2e`.
+
+La CI (`.github/workflows/ci.yml`) corre todo lo anterior en cada PR y en cada push a `main` y `dev`.
 
 Para verificar la migración sin un proyecto de Supabase, con cualquier PostgreSQL 15+:
 
