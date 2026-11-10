@@ -20,6 +20,12 @@ solicitud de cambio (CR) o el defecto (DEF) del Documento Maestro.
   nueva; la prueba de varias etiquetas pasó 30 de 30 repeticiones (RF-07).
 - DEF-02: `docs/05-verificacion.md` refleja los conteos reales de pruebas y el estado de producción.
 
+### Seguridad
+
+- Next.js 16.3.4 → 16.4.5 y `eslint-config-next` a la misma versión: corrige la vulnerabilidad crítica y las
+  altas que reportaba `npm audit` en las dependencias de producción (avisos de Next.js, sharp y source-map-js).
+  `npm audit --omit=dev` queda en cero.
+
 ## [0.1.0] - 2026-09-22
 
 Línea base de construcción (etiqueta `v0.1.0` sobre `7bbd1b2`).
