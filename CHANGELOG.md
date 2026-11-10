@@ -13,6 +13,13 @@ solicitud de cambio (CR) o el defecto (DEF) del Documento Maestro.
   Firefox y Edge (CP-17, RNF-07). En CI, Playwright reintenta una vez y marca como intermitente lo que pasa al
   segundo intento.
 
+### Corregido
+
+- DEF-01 (#1): recargar o cerrar la pestaña con cambios pendientes ya no los pierde. El navegador pide
+  confirmación mientras hay guardados en curso y las escrituras usan `keepalive`. Prueba de regresión E2E
+  nueva; la prueba de varias etiquetas pasó 30 de 30 repeticiones (RF-07).
+- DEF-02: `docs/05-verificacion.md` refleja los conteos reales de pruebas y el estado de producción.
+
 ## [0.1.0] - 2026-09-22
 
 Línea base de construcción (etiqueta `v0.1.0` sobre `7bbd1b2`).

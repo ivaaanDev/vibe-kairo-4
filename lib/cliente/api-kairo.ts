@@ -52,6 +52,8 @@ export function crearClienteKairo({ base = "" }: OpcionesCliente = {}) {
         headers: cuerpo === undefined ? undefined : { "Content-Type": "application/json" },
         body: cuerpo === undefined ? undefined : JSON.stringify(cuerpo),
         credentials: "same-origin",
+        // Una escritura que ya salió termina aunque la página se cierre o se recargue (DEF-01).
+        keepalive: metodo !== "GET",
       });
     } catch {
       return fallo(SIN_CONEXION);
