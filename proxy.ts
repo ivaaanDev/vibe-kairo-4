@@ -8,7 +8,7 @@ import { NextResponse, type NextRequest } from "next/server";
  * Es una comprobación optimista: el layout de la app vuelve a validar al usuario.
  */
 
-const RUTAS_PUBLICAS = ["/acceso", "/registro", "/auth/"];
+const RUTAS_PUBLICAS = ["/acceso", "/registro", "/auth/", "/privacidad"];
 
 export async function proxy(peticion: NextRequest) {
   let respuesta = NextResponse.next({ request: peticion });
