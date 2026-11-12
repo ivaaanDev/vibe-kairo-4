@@ -6,7 +6,7 @@ solicitud de cambio (CR) o el defecto (DEF) del Documento Maestro.
 
 ## [Sin publicar]
 
-## [0.9.0] - 2026-11-08
+## [0.9.0] - 2026-11-11
 
 Liberación de H3 (planeada para el 6 de noviembre): DEF-01 corregido, dependencias de producción sin avisos de
 seguridad, RF-11 e integración continua. Registro en `docs/liberacion/v0.9.0.md`.
