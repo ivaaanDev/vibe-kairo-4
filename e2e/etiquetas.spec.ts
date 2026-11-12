@@ -20,11 +20,45 @@ test("crear y asignar varias etiquetas desde el detalle", async ({ page }) => {
 
   await expect(panel.getByRole("button", { name: "Quitar etiqueta Trabajo" })).toBeVisible();
   await expect(panel.getByRole("button", { name: "Quitar etiqueta Pendientes por cobrar" })).toBeVisible();
+  // Como haría una persona: recarga cuando el indicador ya no dice «Guardando…».
+  await expect(panel.getByRole("status")).not.toHaveText("Guardando…");
   await page.keyboard.press("Escape");
 
   await expect(fila(page, "Cobrar factura")).toContainText("Trabajo, Pendientes por cobrar");
   await page.reload();
   await expect(fila(page, "Cobrar factura")).toContainText("Trabajo, Pendientes por cobrar");
+});
+
+test("salir con cambios sin guardar pide confirmación y no pierde etiquetas (DEF-01)", async ({ page }) => {
+  await crearTarea(page, "Pagar la renta");
+  await fila(page, "Pagar la renta").click();
+  const panel = page.locator('[aria-label="Detalle de la tarea"]');
+
+  // El servidor retiene la actualización de la tarea: el cambio queda pendiente en la cola.
+  let soltar = () => {};
+  const retenida = new Promise<void>((resolver) => (soltar = resolver));
+  await page.route("**/api/tareas/*", async (ruta) => {
+    if (ruta.request().method() === "PATCH") await retenida;
+    await ruta.continue();
+  });
+
+  await panel.getByRole("button", { name: "Añadir etiqueta" }).click();
+  const buscador = panel.getByRole("textbox", { name: "Buscar o crear etiqueta" });
+  await buscador.fill("Casa");
+  await buscador.press("Enter");
+  await expect(panel.getByRole("status")).toHaveText("Guardando…");
+
+  // Intentar salir dispara el aviso del navegador; la persona decide quedarse.
+  const aviso = page.waitForEvent("dialog");
+  await page.close({ runBeforeUnload: true });
+  const dialogo = await aviso;
+  expect(dialogo.type()).toBe("beforeunload");
+  await dialogo.dismiss();
+
+  soltar();
+  await expect(panel.getByRole("status")).not.toHaveText("Guardando…");
+  await page.reload();
+  await expect(fila(page, "Pagar la renta")).toContainText("Casa");
 });
 
 test("el filtro es un único control cerrado que filtra por etiquetas", async ({ page }) => {

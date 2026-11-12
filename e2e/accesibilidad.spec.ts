@@ -2,7 +2,38 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 import { campoAlta, casilla, crearEtiquetaApi, crearTareaApi, fechaLocal, fila, registrarUsuario } from "./utilidades";
 
+/**
+ * Los paneles y vistas entran con animación (el inspector, 240 ms). Si axe mide un cuadro intermedio,
+ * el texto a media opacidad no alcanza el contraste mínimo y la prueba falla por el momento en que mide,
+ * no por el diseño. Antes de medir se espera a que terminen las animaciones finitas y a que los paneles
+ * queden quietos y opacos.
+ */
+async function esperarQueTermineElMovimiento(page: Page) {
+  await page.waitForFunction(() =>
+    document.getAnimations().every((animacion) => animacion.playState !== "running" || animacion.effect?.getComputedTiming().endTime === Infinity),
+  );
+  const estadoDePaneles = () =>
+    page.evaluate(() =>
+      [...document.querySelectorAll('aside[aria-label], [role="dialog"], [role="tabpanel"]')].map((panel) => {
+        const caja = panel.getBoundingClientRect();
+        return { caja: [caja.x, caja.y, caja.width, caja.height].map(Math.round).join(","), opacidad: getComputedStyle(panel).opacity };
+      }),
+    );
+  await expect
+    .poll(
+      async () => {
+        const antes = JSON.stringify(await estadoDePaneles());
+        await page.waitForTimeout(80);
+        const despues = await estadoDePaneles();
+        return antes === JSON.stringify(despues) && despues.every((panel) => panel.opacidad === "1");
+      },
+      { message: "los paneles siguen en movimiento" },
+    )
+    .toBe(true);
+}
+
 async function sinViolacionesGraves(page: Page) {
+  await esperarQueTermineElMovimiento(page);
   const resultado = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
   const graves = resultado.violations.filter((violacion) => violacion.impact === "serious" || violacion.impact === "critical");
   expect(graves.map((violacion) => `${violacion.id}: ${violacion.nodes.map((nodo) => nodo.target.join(" ")).join(", ")}`)).toEqual([]);
