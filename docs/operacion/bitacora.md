@@ -10,3 +10,4 @@
 | 2026-11-11 | CP-11 en producción con el lote de 200 tareas | Lista: mediana 626 ms, máximo 645 ms. Agenda: mediana 566 ms, máximo 796 ms | Pasa; lote eliminado al terminar |
 | 2026-11-12 | Respaldo semanal: public, auth.users y esquema de auth.users | 3 archivos: public 20 KB, auth-users 2,7 KB, esquema 6,2 KB | SHA-256 en el Documento Maestro (9.5); guardado fuera del repositorio |
 | 2026-11-12 | Prueba de restauración del respaldo del 12/11 en PostgreSQL 17 local (podman) | 6 tareas, 5 etiquetas, 7 asignaciones y 5 usuarios restaurados | Primera restauración probada; los 5 usuarios coinciden con el panel de Authentication |
+| 2026-11-12 | Revisión semanal de incidencias e incidentes | Sin incidencias abiertas en GitHub; el monitor marca 100 % y 0 caídas en 30 días | La pausa de Supabase del 07/11 no la vio el monitor: se registra como INC-01 en docs/operacion/niveles-de-servicio.md |
