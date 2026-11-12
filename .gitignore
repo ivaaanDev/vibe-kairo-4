@@ -17,3 +17,6 @@ playwright-report/
 playwright/.cache/
 
 .DS_Store
+
+# Configuración local de herramientas de agentes
+.scrakk/
